@@ -7,24 +7,23 @@
   box-shadow: 5px 5px 5px 5px darkgray;
   height: fit-content;
   margin: 0 auto;
-}
-.app-enter {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-.app-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 5000ms ease-in;
+  overflow: hidden;
 }
 
-.app-exit {
-  opacity: 1;
-  transform: translateX(0);
-}
-.app-exit-active {
+.contactsList-enter {
   opacity: 0;
+}
 
-  transform: translateX(-100%);
-  transition: all 5000ms ease-in;
+.contactsList-enter-active {
+  opacity: 1;
+  transition: all 250ms linear;
+}
+
+.contactsList-exit {
+  opacity: 1;
+}
+
+.contactsList-exit-active {
+  opacity: 0;
+  transition: all 250ms linear;
 }

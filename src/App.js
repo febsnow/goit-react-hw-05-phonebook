@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PropTypes from "prop-types";
 import uniqid from "uniqid";
 import Section from "./сomponents/Section/Section";
 import AddContactForm from "./сomponents/AddContactForm/AddContactForm";
 import ContactList from "./сomponents/ContactsList/ContactList";
 import Filter from "./сomponents/Filter/Filter";
+import Logo from "./сomponents/Logo/Logo";
+
+import * as logo from "../src/сomponents/Logo/Logo.module.css";
+import styles from "../src/сomponents/Section/Section.module.css";
 
 import "./App.css";
 
@@ -21,12 +25,13 @@ class App extends Component {
   };
 
   state = {
-    contacts: [
-      // { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      // { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      // { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      // { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
+    contacts: [],
+    // [
+    // { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+    // { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+    // { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+    // { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+    // ]
     filter: "",
   };
 
@@ -96,22 +101,72 @@ class App extends Component {
     const { contacts, filter } = this.state;
 
     return (
-      <div className="phoneBook">
-        <Section title="Phonebook">
-          <AddContactForm submitHandler={this.addNewContact} />
-        </Section>
-        {contacts.length === 0 ? null : (
-          <Section title="Contacts">
-            {contacts.length > 1 ? (
-              <Filter value={filter} changeHandler={this.filterContacts} />
-            ) : null}
-            <ContactList
-              list={contactsList}
-              handleRemove={this.removeContact}
-            />
-          </Section>
-        )}
-      </div>
+      <CSSTransition
+        in={true}
+        appear={true}
+        timeout={500}
+        classNames={styles}
+        unmountOnExit
+      >
+        {(stage) => {
+          return (
+            <div className="phoneBook">
+              <CSSTransition
+                in={stage === "entered"}
+                timeout={500}
+                classNames={logo}
+                unmountOnExit
+              >
+                <Logo title="Phonebook" />
+              </CSSTransition>
+
+              <Section>
+                <AddContactForm submitHandler={this.addNewContact} />
+              </Section>
+
+              <CSSTransition
+                in={contacts.length > 1}
+                timeout={500}
+                classNames={styles}
+                unmountOnExit
+              >
+                <Section>
+                  <Filter value={filter} changeHandler={this.filterContacts} />
+                </Section>
+              </CSSTransition>
+
+              <CSSTransition
+                in={contacts.length !== 0}
+                timeout={500}
+                classNames={styles}
+                unmountOnExit
+              >
+                <Section title="Contacts">
+                  {/* <CSSTransition
+                    in={true}
+                    timeout={750}
+                    classNames="contactsList"
+                    unmountOnExit
+                  > */}
+                  <ContactList
+                    list={contactsList}
+                    handleRemove={this.removeContact}
+                  />
+                  {/* </CSSTransition> */}
+                </Section>
+              </CSSTransition>
+              {/* {contacts.length === 0 ? null : (
+                  {contacts.length > 1 ? (
+                    <Filter
+                      value={filter}
+                      changeHandler={this.filterContacts}
+                    />
+                  ) : null}
+              )} */}
+            </div>
+          );
+        }}
+      </CSSTransition>
     );
   }
 }

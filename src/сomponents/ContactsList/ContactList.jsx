@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import uniqid from "uniqid";
-import styles from "./ContactList.module.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "./ContactList.css";
 
 export default class ContactList extends Component {
   static propTypes = {
@@ -16,16 +15,15 @@ export default class ContactList extends Component {
   render() {
     const { list, handleRemove } = this.props;
     return (
-      <TransitionGroup component="ul" className={styles.list}>
+      <TransitionGroup component="ul" className="list">
         {list.map((contact) => {
-          const id = uniqid();
           return (
-            <CSSTransition key={id} timeout={500} classNames={styles.item}>
-              <li className={styles.listItem}>
-                <span className={styles.info}>{contact.name}:</span>
-                <span className={styles.info}>{contact.number}</span>
+            <CSSTransition key={contact.id} timeout={500} classNames="item">
+              <li className="listItem">
+                <span className="info">{contact.name}:</span>
+                <span className="info">{contact.number}</span>
                 <button
-                  className={styles.button}
+                  className="button"
                   type="button"
                   onClick={() => {
                     handleRemove(contact.id);
