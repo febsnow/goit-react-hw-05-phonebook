@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
 import uniqid from "uniqid";
 import Section from "./сomponents/Section/Section";
@@ -12,30 +12,34 @@ import * as logo from "../src/сomponents/Logo/Logo.module.css";
 import styles from "../src/сomponents/Section/Section.module.css";
 
 import "./App.css";
+import ErrorPrompt from "./сomponents/ErrorPrompt/ErrorPrompt";
 
 class App extends Component {
   static propTypes = {
     contacts: PropTypes.array.isRequired,
     filter: PropTypes.string,
+    error: PropTypes.string,
   };
 
   static defaultProps = {
     filter: "",
     contacts: [],
+    error: null,
   };
 
   state = {
-    contacts: [],
-    // [
-    // { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-    // { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-    // { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-    // { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    // ]
+    contacts: [
+      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+    ],
     filter: "",
+    error: null,
   };
 
   addNewContact = (name, number) => {
+    this.setState({ error: null });
     const newContact = {
       id: uniqid(),
       name,
@@ -47,12 +51,16 @@ class App extends Component {
     );
 
     if (existedContact) {
-      return alert(`${newContact.name} already exist`);
+      this.setState({ error: `${newContact.name} already exist` });
+      return setTimeout(() => {
+        this.setState({ error: null });
+      }, 3000);
     }
 
     this.setState((prevState) => {
       return {
         contacts: [...prevState.contacts, newContact],
+        error: null,
       };
     });
   };
@@ -98,75 +106,76 @@ class App extends Component {
 
   render() {
     const contactsList = this.filtredContacts();
-    const { contacts, filter } = this.state;
+    const { contacts, filter, error } = this.state;
 
     return (
-      <CSSTransition
-        in={true}
-        appear={true}
-        timeout={500}
-        classNames={styles}
-        unmountOnExit
-      >
-        {(stage) => {
-          return (
-            <div className="phoneBook">
-              <CSSTransition
-                in={stage === "entered"}
-                timeout={500}
-                classNames={logo}
-                unmountOnExit
-              >
-                <Logo title="Phonebook" />
-              </CSSTransition>
+      <>
+        <CSSTransition
+          in={true}
+          appear={true}
+          timeout={250}
+          classNames={styles}
+          unmountOnExit
+        >
+          {(stage) => {
+            return (
+              <div className="phoneBook">
+                <CSSTransition
+                  in={stage === "entered"}
+                  timeout={500}
+                  classNames={logo}
+                  unmountOnExit
+                >
+                  <Logo title="Phonebook" />
+                </CSSTransition>
 
-              <Section>
-                <AddContactForm submitHandler={this.addNewContact} />
-              </Section>
-
-              <CSSTransition
-                in={contacts.length > 1}
-                timeout={500}
-                classNames={styles}
-                unmountOnExit
-              >
                 <Section>
-                  <Filter value={filter} changeHandler={this.filterContacts} />
+                  <AddContactForm submitHandler={this.addNewContact} />
                 </Section>
-              </CSSTransition>
 
-              <CSSTransition
-                in={contacts.length !== 0}
-                timeout={500}
-                classNames={styles}
-                unmountOnExit
-              >
-                <Section title="Contacts">
-                  {/* <CSSTransition
-                    in={true}
-                    timeout={750}
-                    classNames="contactsList"
-                    unmountOnExit
-                  > */}
-                  <ContactList
-                    list={contactsList}
-                    handleRemove={this.removeContact}
-                  />
-                  {/* </CSSTransition> */}
-                </Section>
-              </CSSTransition>
-              {/* {contacts.length === 0 ? null : (
-                  {contacts.length > 1 ? (
+                <CSSTransition
+                  appear={true}
+                  in={contacts.length > 1}
+                  timeout={500}
+                  classNames={styles}
+                  unmountOnExit
+                >
+                  <Section>
                     <Filter
                       value={filter}
                       changeHandler={this.filterContacts}
                     />
-                  ) : null}
-              )} */}
-            </div>
-          );
-        }}
-      </CSSTransition>
+                  </Section>
+                </CSSTransition>
+
+                <CSSTransition
+                  appear={true}
+                  in={contacts.length > 0}
+                  timeout={500}
+                  classNames={styles}
+                  unmountOnExit
+                >
+                  <Section title="Contacts">
+                    <CSSTransition
+                      appear={true}
+                      in={true}
+                      timeout={250}
+                      classNames="contactsList"
+                      unmountOnExit
+                    >
+                      <ContactList
+                        list={contactsList}
+                        handleRemove={this.removeContact}
+                      />
+                    </CSSTransition>
+                  </Section>
+                </CSSTransition>
+              </div>
+            );
+          }}
+        </CSSTransition>
+        {error && <ErrorPrompt message={error} />}
+      </>
     );
   }
 }

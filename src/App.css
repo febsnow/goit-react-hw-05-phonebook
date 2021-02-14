@@ -10,6 +10,13 @@
   overflow: hidden;
 }
 
+.contactsList-appear {
+  transform: translateY(-100%);
+}
+.contactsList-appear-active {
+  transform: translateY(0);
+  transition: all 250ms linear;
+}
 .contactsList-enter {
   opacity: 0;
 }

@@ -1,5 +1,9 @@
-section {
+.section {
+  padding: 10px;
   overflow: hidden;
+}
+.sectionTitle {
+  margin: 10px 0 10px 10px;
 }
 .appear {
   opacity: 0;
@@ -9,7 +13,7 @@ section {
 .appearActive {
   opacity: 1;
   transform: translateY(0);
-  transition: all 500ms linear;
+  transition: all 250ms linear;
 }
 
 .enter {
@@ -20,24 +24,17 @@ section {
 .enterActive {
   opacity: 1;
   transform: translateY(0);
-  transition: all 500ms linear;
+  transition: all 250ms linear;
 }
 
 .exit {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
+
 .exitActive {
   opacity: 0;
 
-  transform: translateX(-100%);
-  transition: all 1000ms linear 500ms;
+  transform: translateY(-100%);
+  transition: all 500ms linear 500ms;
 }
-
-/* .title-enter {
-  transform: translateX(-100%);
-}
-.title-enter-active {
-  transform: translateX(0);
-  transition: all 500ms ease-in;
-} */

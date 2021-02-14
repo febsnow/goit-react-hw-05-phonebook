@@ -18,7 +18,13 @@ export default class ContactList extends Component {
       <TransitionGroup component="ul" className="list">
         {list.map((contact) => {
           return (
-            <CSSTransition key={contact.id} timeout={500} classNames="item">
+            <CSSTransition
+              appear={true}
+              key={contact.id}
+              timeout={650}
+              classNames="item"
+              unmountOnExit
+            >
               <li className="listItem">
                 <span className="info">{contact.name}:</span>
                 <span className="info">{contact.number}</span>
