@@ -11,26 +11,30 @@
 }
 
 .contactsList-appear {
+  opacity: 0;
   transform: translateY(-100%);
 }
 .contactsList-appear-active {
+  opacity: 1;
   transform: translateY(0);
   transition: all 250ms linear;
 }
-.contactsList-enter {
+/* .contactsList-enter {
   opacity: 0;
 }
 
 .contactsList-enter-active {
   opacity: 1;
   transition: all 250ms linear;
-}
+} */
 
 .contactsList-exit {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .contactsList-exit-active {
   opacity: 0;
+  transform: translateY(-100%);
   transition: all 250ms linear;
 }

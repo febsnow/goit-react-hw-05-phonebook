@@ -9,6 +9,7 @@ import Filter from "./сomponents/Filter/Filter";
 import Logo from "./сomponents/Logo/Logo";
 
 import * as logo from "../src/сomponents/Logo/Logo.module.css";
+import * as errorMsg from "../src/сomponents/ErrorPrompt/ErrorPrompt.module.css";
 import styles from "../src/сomponents/Section/Section.module.css";
 
 import "./App.css";
@@ -29,10 +30,10 @@ class App extends Component {
 
   state = {
     contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+      // { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+      // { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+      // { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+      // { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
     ],
     filter: "",
     error: null,
@@ -136,7 +137,7 @@ class App extends Component {
                 <CSSTransition
                   appear={true}
                   in={contacts.length > 1}
-                  timeout={500}
+                  timeout={300}
                   classNames={styles}
                   unmountOnExit
                 >
@@ -151,13 +152,13 @@ class App extends Component {
                 <CSSTransition
                   appear={true}
                   in={contacts.length > 0}
-                  timeout={500}
+                  timeout={300}
                   classNames={styles}
                   unmountOnExit
                 >
                   <Section title="Contacts">
                     <CSSTransition
-                      appear={true}
+                      // appear={true}
                       in={true}
                       timeout={250}
                       classNames="contactsList"
@@ -174,7 +175,18 @@ class App extends Component {
             );
           }}
         </CSSTransition>
-        {error && <ErrorPrompt message={error} />}
+
+        <CSSTransition
+          appear={true}
+          in={error !== null}
+          timeout={300}
+          classNames={errorMsg}
+          unmountOnExit
+        >
+          <ErrorPrompt message={error} />
+        </CSSTransition>
+
+        {/* {error && <ErrorPrompt message={error} />} */}
       </>
     );
   }
